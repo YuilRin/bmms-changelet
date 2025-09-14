@@ -1,0 +1,15 @@
+# mapping feature -> helm path (optional)
+mappings:
+  order:
+    instance_count: "order.replicas"
+    order_timeout: "order.timeout_seconds"
+  inventory:
+    stock: "inventory.default_stock"
+  subscription:
+    plan_id: "subscription.plan_id"
+    addons: "subscription.addons"
+  payment:
+    recurring_payments: "payment.recurring"
+    payment_enabled: "payment.enabled"
+  billing:
+    payment_model: "billing.payment_model"

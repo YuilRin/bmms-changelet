@@ -1,0 +1,117 @@
+# service_catalogue.yaml
+services:
+  - name: customer
+    id: customer
+    display_name: "Customer Service"
+    basePath: /customer-svc/api/v1
+    version: v1.0.0
+    endpoints: 
+      - /customers
+    dependencies: []
+    resources:
+      cpu: "200m"
+      memory: "256Mi"
+    scalable: true
+    allowed_features:
+      - name: "segment"
+      - name: "language"
+      - name: "data_retention_days"
+
+  - name: catalogue
+    id: catalogue
+    display_name: "Catalogue Service"
+    basePath: /catalogue-svc/api/v1
+    version: v1.0.0
+    dependencies: []
+    resources:
+      cpu: "200m"
+      memory: "256Mi"
+    scalable: true
+    allowed_features:
+      - name: "price"
+      - name: "plan"
+      - name: "feature_flags"
+
+  - name: inventory
+    id: inventory
+    display_name: "Inventory Service"
+    basePath: /inventory-svc/api/v1
+    version: v1.0.0
+    dependencies: [catalogue]
+    resources:
+      cpu: "300m"
+      memory: "256Mi"
+    scalable: true
+    allowed_features:
+      - name: "stock"
+      - name: "reserve_timeout"
+
+  - name: order
+    id: order
+    display_name: "Order Service"
+    basePath: /order-svc/api/v1
+    version: v1.0.0
+    dependencies: [customer, inventory, billing]
+    resources:
+      cpu: "500m"
+      memory: "512Mi"
+    scalable: true
+    allowed_features:
+      - name: "instance_count"
+      - name: "order_timeout"
+
+  - name: billing
+    id: billing
+    display_name: "Billing Service"
+    basePath: /billing-svc/api/v1
+    version: v1.0.0
+    dependencies: [payment, customer]
+    resources:
+      cpu: "400m"
+      memory: "512Mi"
+    scalable: true
+    allowed_features:
+      - name: "payment_model"
+      - name: "invoice_due_days"
+
+  - name: payment
+    id: payment
+    display_name: "Payment Service"
+    basePath: /payment-svc/api/v1
+    version: v1.0.0
+    dependencies: [billing]
+    resources:
+      cpu: "300m"
+      memory: "256Mi"
+    scalable: true
+    allowed_features:
+      - name: "recurring_payments"
+      - name: "payment_enabled"
+
+  - name: subscription
+    id: subscription
+    display_name: "Subscription Service"
+    basePath: /subscription-svc/api/v1
+    version: v1.0.0
+    dependencies: [billing, customer]
+    resources:
+      cpu: "300m"
+      memory: "256Mi"
+    scalable: true
+    allowed_features:
+      - name: "plan_id"
+      - name: "addons"
+
+  - name: promotion
+    id: promotion
+    display_name: "Promotion Service"
+    basePath: /promotion-svc/api/v1
+    version: v1.0.0
+    dependencies: [catalogue, customer]
+    resources:
+      cpu: "200m"
+      memory: "256Mi"
+    scalable: true
+    allowed_features:
+      - name: "discount"
+      - name: "feature_flag"
