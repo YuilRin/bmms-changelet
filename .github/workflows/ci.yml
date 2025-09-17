@@ -16,7 +16,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"  
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
@@ -25,4 +25,5 @@ jobs:
           pip install -e .
 
       - name: Run pytest
-        run: pytest -q
+        run: |
+          PYTHONPATH=src pytest -q

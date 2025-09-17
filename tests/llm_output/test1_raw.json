@@ -1,0 +1,25 @@
+{
+    "proposal_text": "Chuyển nhóm sản phẩm A sang subscription theo tháng",
+    "changeset": {
+        "model": "product_catalog",
+        "features": [
+            {
+                "key": "product_group",
+                "value": "A"
+            },
+            {
+                "key": "subscription_type",
+                "value": "monthly"
+            }
+        ],
+        "impacted_services": [
+            "billing",
+            "product_catalog"
+        ]
+    },
+    "metadata": {
+        "intent": "change_product_subscription",
+        "confidence": 0.9,
+        "risk": "low"
+    }
+}
