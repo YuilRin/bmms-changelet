@@ -1,10 +1,8 @@
-# tests/test_validator.py
-import json
-from src.validator import validate_changeset, load_catalogue, load_schema
+from bmms_changelet.validator import validate_changeset, load_catalogue, load_schema
 
 def test_scale_order_valid():
-    catalogue = load_catalogue("../schema/service_catalogue.yaml")
-    schema = load_schema("../schema/changeset.schema.json")
+    catalogue = load_catalogue("schema/service_catalogue.yaml")
+    schema = load_schema("schema/changeset.schema.json")
     changeset = {
         "id": "chg-0001",
         "intent": "scale_order",
