@@ -1,58 +1,64 @@
-# 🧩 BMMS ChangeSet Toolkit
+# 📘 BMMS ChangeSet Toolkit
 
-[![CI](https://github.com/your-username/bmms-changelet/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/bmms-changelet/actions)
-
-Toolkit hỗ trợ **chuẩn hóa ChangeSet / service catalogue** cho hệ thống microservices.  
-Bao gồm:
-- JSON Schema cho ChangeSet
-- Service Catalogue (YAML)
-- Validator (schema + dependency + risk check)
-- Converter ChangeSet → Helm values
-- Bộ test & CI/CD
+[![CI](https://github.com/your-username/bmms-changelet/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/bmms-changelet/actions)  
+Toolkit for **standardizing ChangeSets & Service Catalogue** in **microservices systems**.  
 
 ---
 
-## 📂 Cấu trúc repo
+## ✨ Features
+- ✅ JSON Schema for **ChangeSet**  
+- ✅ Service Catalogue (**YAML**)  
+- ✅ Validator (schema + dependency + risk check)  
+- ✅ Converter **ChangeSet → Helm values**  
+- ✅ Test suite & CI/CD pipeline  
 
+---
+
+## 📂 Repository Structure
+```plaintext
 bmms-changelet/
-├── src/
-│ └── bmms_changelet/
-│ ├── init.py
-│ ├── validator.py # Validator chính
-│ └── convert_to_helm.py # Converter sang Helm values
+├── src/bmms_changelet/
+│   ├── __init__.py
+│   ├── validator.py         # Main Validator
+│   └── convert_to_helm.py   # Converter to Helm values
+│
 ├── schema/
-│ ├── changeset.schema.json # JSON Schema cho ChangeSet
-│ ├── service_catalogue.yaml # Service catalogue
-│ └── mapping.yaml # Mapping feature → helm path
+│   ├── changeset.schema.json   # JSON Schema for ChangeSet
+│   ├── service_catalogue.yaml  # Service catalogue
+│   └── mapping.yaml            # Mapping feature → helm path
+│
 ├── tests/
-│ └── test_validator.py # Unit tests
+│   └── test_validator.py       # Unit tests
+│
 ├── requirements.txt
 ├── setup.cfg
 ├── pyproject.toml
-├── .github/workflows/ci.yml # CI pipeline
+├── .github/workflows/ci.yml    # CI pipeline
 └── README.md
 
----
 
-## 🚀 Cài đặt
-
-Yêu cầu Python ≥ 3.9.
+## 🚀 Installation
+Requirement: **Python ≥ 3.9**
 
 ```bash
+# Clone repo
 git clone https://github.com/your-username/bmms-changelet.git
 cd bmms-changelet
 
-# Cài dependency
+# Install dependencies
 pip install -r requirements.txt
 
-# Cài package ở chế độ editable
+# Install package in editable mode
 pip install -e .
+```
 
-✅ Chạy test
+## ✅ Run Tests
 ```bash
 pytest -q
-
-Nếu thành công:
+```
+If successful, you should see:
 ```bash
 .                                                                   [100%]
 1 passed in 0.11s
+```
+
