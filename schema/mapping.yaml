@@ -13,3 +13,6 @@ mappings:
     payment_enabled: "payment.enabled"
   billing:
     payment_model: "billing.payment_model"
+  catalogue:
+    product_group: "catalogue.product_group"
+    subscription_type: "catalogue.subscription_type"
