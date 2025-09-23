@@ -1,64 +1,86 @@
-# 📘 BMMS ChangeSet Toolkit
+# BMMS Changelet
 
-[![CI](https://github.com/your-username/bmms-changelet/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/bmms-changelet/actions)  
-Toolkit for **standardizing ChangeSets & Service Catalogue** in **microservices systems**.  
+This project provides a **ChangeSet schema + validator + converter pipeline** to normalize LLM outputs into actionable Kubernetes/Helm configurations.
 
----
+## Features
 
-## ✨ Features
-- ✅ JSON Schema for **ChangeSet**  
-- ✅ Service Catalogue (**YAML**)  
-- ✅ Validator (schema + dependency + risk check)  
-- ✅ Converter **ChangeSet → Helm values**  
-- ✅ Test suite & CI/CD pipeline  
+- **Service Catalogue**  
+  Defined in `schema/service_catalogue.yaml`, listing all available microservices, their dependencies, and allowed features.
 
----
+- **ChangeSet Schema**  
+  JSON Schema (`schema/changeset.schema.json`) ensures every ChangeSet follows a standardized structure.
 
-## 📂 Repository Structure
-```plaintext
-bmms-changelet/
-├── src/bmms_changelet/
-│   ├── __init__.py
-│   ├── validator.py         # Main Validator
-│   └── convert_to_helm.py   # Converter to Helm values
-│
-├── schema/
-│   ├── changeset.schema.json   # JSON Schema for ChangeSet
-│   ├── service_catalogue.yaml  # Service catalogue
-│   └── mapping.yaml            # Mapping feature → helm path
-│
-├── tests/
-│   └── test_validator.py       # Unit tests
-│
-├── requirements.txt
-├── setup.cfg
-├── pyproject.toml
-├── .github/workflows/ci.yml    # CI pipeline
-└── README.md
+- **Normalizer**  
+  `normalize_input.py` converts raw LLM outputs (with `proposal_text` and `features`) into valid ChangeSets:
+  - Adds `id`, `intent`, `timestamp`, `request_context`
+  - Maps `features[]` into `changes[].config`
+  - Service alias mapping (`product_catalog → catalogue`)
 
+- **Validator**  
+  `validator.py` enforces:
+  - JSON schema compliance
+  - Service existence in catalogue
+  - Role-based permissions
+  - Dependency checks
+  - Risk & confidence thresholds
 
-## 🚀 Installation
-Requirement: **Python ≥ 3.9**
+- **Converter**  
+  `convert_to_helm.py` translates validated ChangeSets into `values.yaml` for Helm.
 
+- **Testing & CI**  
+  - Unit tests with `pytest` (`tests/`)
+  - GitHub Actions workflow (`.github/workflows/ci.yml`)
+  - Editable install (`setup.cfg`) with `src` layout
+
+## Quickstart
+
+1. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. **Normalize raw LLM output**
 ```bash
-# Clone repo
-git clone https://github.com/your-username/bmms-changelet.git
-cd bmms-changelet
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Install package in editable mode
-pip install -e .
+python src/bmms_changelet/normalize_input.py tests/llm_output/test1_raw.json tests/changesets/test1.json
 ```
 
-## ✅ Run Tests
+3. **Validate ChangeSet**
+```bash
+python src/bmms_changelet/validator.py tests/changesets/test1.json
+```
+
+4. **Convert ChangeSet to Helm values**
+```bash
+python src/bmms_changelet/convert_to_helm.py tests/changesets/test1.json > values.yaml
+```
+
+5. **Run tests**
 ```bash
 pytest -q
 ```
-If successful, you should see:
-```bash
-.                                                                   [100%]
-1 passed in 0.11s
-```
 
+## Repo Structure
+
+```plaintext
+bmms-changelet/
+├──schema/
+│   ├──  service_catalogue.yaml
+│   └── changeset.schema.json
+├── src/bmms_changelet/
+│   ├── __init__.py
+│   ├── validator.py
+│   ├── normalize_input.py
+│   └── convert_to_helm.py
+├── tests/
+│   ├── test_normalize.py
+│   ├── changesets/
+│   ├── llm_output/
+|   └── test_validator.py 
+├── .github/workflows/
+│   └──  ci.yml
+├── requirements.txt
+├── setup.cfg
+├── pyproject.toml
+├── .github/workflows/ci.yml    
+└── README.md
+```
