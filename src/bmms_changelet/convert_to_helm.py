@@ -1,10 +1,9 @@
 import yaml
+import sys
 from pathlib import Path
 
-# trỏ lên repo root
-BASE_DIR = Path(__file__).resolve().parents[2]
+BASE_DIR = Path(__file__).resolve().parents[2]  # repo root
 MAPPING_PATH = BASE_DIR / "schema" / "mapping.yaml"
-
 
 def load_mapping():
     """
@@ -31,7 +30,6 @@ def unflatten_dict(flat_dict):
         d[keys[-1]] = v
     return result
 
-
 def convert(changeset, mapping=None):
     """
     Convert ChangeSet -> Helm values dựa trên mapping.yaml.
@@ -53,6 +51,11 @@ def convert(changeset, mapping=None):
 
     return unflatten_dict(flat_output)
 
+def export_to_file(changeset, out_path="values.yaml"):
+    values = convert(changeset)
+    with open(out_path, "w", encoding="utf-8") as f:
+        yaml.dump(values, f, sort_keys=False)
+    print(f"✅ Exported Helm values to {out_path}")
 
 if __name__ == "__main__":
     # demo chạy trực tiếp
@@ -60,15 +63,17 @@ if __name__ == "__main__":
     import sys
 
     if len(sys.argv) < 2:
-        print("Usage: python convert_to_helm.py path/to/changeset.json")
+        print("Usage: convert_to_helm.py changeset.json [output.yaml]")
         sys.exit(1)
 
     ch_path = Path(sys.argv[1])
+    out_path = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("values.yaml")
+
+    import json
     with open(ch_path, "r", encoding="utf-8") as f:
         changeset = json.load(f)
 
-    mapping = load_mapping()
-    result = convert(changeset, mapping)
-
-    print("YAML output:")
-    print(yaml.safe_dump(result, sort_keys=False, allow_unicode=True))
+    export_to_file(changeset, out_path)
+    # đồng thời in ra màn hình để tiện debug
+    with open(out_path, "r", encoding="utf-8") as f:
+        print(f.read())

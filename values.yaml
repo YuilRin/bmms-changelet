@@ -1,0 +1,13 @@
+catalogue:
+  product_group: B
+  subscription_type: yearly
+billing:
+  payment_model: prepaid
+order:
+  replicas: 3
+  timeout_seconds: 120
+subscription:
+  plan_id: premium
+  addons:
+  - support
+  - analytics
