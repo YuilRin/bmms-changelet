@@ -54,10 +54,55 @@ python src/bmms_changelet/validator.py tests/changesets/test1.json
 python src/bmms_changelet/convert_to_helm.py tests/changesets/test1.json > values.yaml
 ```
 
+nó sẽ tạo ra value.yaml tạo thư mục gốc
+
 5. **Run tests**
 ```bash
 pytest -q
 ```
+
+
+## Test trên Django
+
+1. **Kiểm tra đã có virtual environment chưa**
+
+Trong thư mục project (bmms-changelet) thường sẽ có thư mục venv hoặc .venv. Nếu chưa có thì tạo mới:
+
+```bash
+python -m venv venv
+```
+
+Rồi kích hoạt môi trường ảo:
+```bash
+.\venv\Scripts\activate
+```
+2. **Cài Django và dependencies**
+
+Cài luôn tất cả thư viện:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. **Chạy migration và server**
+
+```bash
+python manage.py migrate
+python manage.py runserver
+```
+## Dry-run & Apply
+
+Dry-run
+```bash
+helm upgrade --install demo ./charts/demo -f values.yaml --namespace tenant-demo --dry-run
+```
+
+Apply thật
+```bash
+helm upgrade --install demo ./charts/demo -f values.yaml --namespace tenant-demo
+```
+
+
 
 ## Repo Structure
 
